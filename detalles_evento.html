@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprar Tickets | Gira ECLIPSE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Variables y Estilos Generales (Reutilizados del diseño principal) */
+        :root {
+            --color-dark-bg: #0A0A0A;
+            --color-primary-neon: #00FFFF; /* Cian */
+            --color-secondary-neon: #FF00FF; /* Magenta */
+            --color-light-text: #EFEFEF;
+            --color-price: #39FF14; /* Verde Lima */
+            --font-heading: 'Michroma', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--color-light-text);
+            background-color: var(--color-dark-bg);
+            line-height: 1.6;
+            padding-top: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Títulos */
+        h1 {
+            font-family: var(--font-heading);
+            font-size: 3.5rem;
+            color: var(--color-light-text);
+            text-shadow: 0 0 10px var(--color-secondary-neon);
+            border-bottom: 2px solid var(--color-primary-neon);
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Grid de Detalles y Asientos */
+        .event-layout {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 4rem;
+        }
+
+        .details-panel {
+            background-color: #1A1A1A;
+            padding: 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .details-panel h2 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--color-primary-neon);
+            margin-bottom: 1.5rem;
+        }
+        
+        .info-group {
+            margin-bottom: 1.5rem;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #2C2C2C;
+        }
+        .info-group strong {
+            display: block;
+            color: var(--color-secondary-neon);
+            font-size: 1.2rem;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            margin-bottom: 0.3rem;
+        }
+
+        /* Asientos (Mapa y Selección) */
+        .seating-area {
+            text-align: center;
+        }
+
+        .seating-map {
+            background-color: #000000;
+            padding: 3rem 1rem 1rem;
+            border-radius: 10px;
+            border: 2px solid var(--color-secondary-neon);
+            margin-bottom: 2rem;
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+        }
+        
+        .stage {
+            font-family: var(--font-heading);
+            background-color: var(--color-primary-neon);
+            color: var(--color-dark-bg);
+            padding: 0.5rem;
+            margin-bottom: 2rem;
+            border-radius: 5px;
+            text-transform: uppercase;
+            box-shadow: 0 0 15px var(--color-primary-neon);
+        }
+
+        .seats-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
+            max-width: 400px; /* Limita el ancho del mapa */
+            margin: 0 auto;
+        }
+
+        .seat {
+            width: 20px;
+            height: 20px;
+            background-color: #333;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.2s;
+            margin: 2px;
+        }
+
+        .seat:hover {
+            background-color: var(--color-primary-neon);
+            transform: scale(1.2);
+        }
+
+        .seat.selected {
+            background-color: var(--color-price);
+            box-shadow: 0 0 8px var(--color-price);
+            transform: scale(1.1);
+        }
+
+        .seat-legend {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #BDBDBD;
+        }
+        .seat-legend span {
+            display: inline-block;
+            margin-left: 15px;
+        }
+        .seat-legend .color {
+            width: 15px;
+            height: 15px;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        /* Botón de Fila (Mismo estilo que el principal) */
+        .btn {
+            display: block;
+            background-color: var(--color-primary-neon);
+            color: var(--color-dark-bg);
+            padding: 1.2rem 3.5rem;
+            border-radius: 5px;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+            text-transform: uppercase;
+            text-align: center;
+        }
+        .btn:hover {
+            background-color: transparent;
+            color: var(--color-primary-neon);
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 1);
+        }
+
+        /* JavaScript para Asientos */
+        .seat.reserved {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+        
+        /* Media Query para responsividad de la grilla */
+        @media (max-width: 1000px) {
+            .event-layout {
+                grid-template-columns: 1fr; /* Una sola columna en pantallas pequeñas */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Selecciona Tus Asientos para Nova Star</h1>
+
+        <div class="event-layout">
+            
+            <div class="details-panel">
+                <h2>Detalles del Evento</h2>
+                
+                <div class="info-group">
+                    <strong>Artista</strong>
+                    <p>Nova Star: Gira Eclipse</p>
+                </div>
+                <div class="info-group">
+                    <strong>Lugar</strong>
+                    <p>Estadio Planetario, Sector Alpha</p>
+                </div>
+                <div class="info-group">
+                    <strong>Fecha y Hora</strong>
+                    <p>Viernes, 15 de Diciembre 2025 | 20:00 Horas</p>
+                </div>
+                <div class="info-group">
+                    <strong>Costo Base por Asiento</strong>
+                    <p style="color: var(--color-price); font-size: 1.8rem; font-family: var(--font-heading);">120 €</p>
+                </div>
+                
+                <div class="info-group" style="border-bottom: none;">
+                    <strong>Descripción</strong>
+                    <p>El show más esperado del año. Nova Star trae su mezcla de Pop Fusión y efectos visuales interestelares. ¡No te pierdas la noche más brillante de tu vida!</p>
+                </div>
+            </div>
+
+            <div class="seating-area">
+                <h2>Mapa de Asientos</h2>
+                
+                <div class="seating-map">
+                    <div class="stage">Escenario - Iluminación Láser</div>
+                    
+                    <div class="seats-grid" id="seats-grid">
+                        </div>
+                    
+                    <div class="seat-legend">
+                        <span><span class="color" style="background-color: #333;"></span> Disponible</span>
+                        <span><span class="color" style="background-color: var(--color-price);"></span> Seleccionado</span>
+                        <span><span class="color" style="background-color: #555;"></span> Reservado</span>
+                    </div>
+                </div>
+
+                <div style="background-color: #1A1A1A; padding: 1.5rem; border-radius: 10px;">
+                    <p style="font-size: 1.5rem; color: var(--color-secondary-neon); margin-bottom: 1rem;">
+                        Asientos Seleccionados: <span id="selected-count" style="color: var(--color-price);">0</span>
+                    </p>
+                    
+                    <a href="fila_virtual.html" class="btn" id="checkout-btn">
+                        CONTINUAR A LA FILA DE COMPRA
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const grid = document.getElementById('seats-grid');
+        const countElement = document.getElementById('selected-count');
+        let selectedCount = 0;
+
+        // Generar 10 filas de 10 asientos (100 asientos)
+        for (let i = 0; i < 100; i++) {
+            const seat = document.createElement('div');
+            seat.classList.add('seat');
+            
+            // Simular algunos asientos reservados 
+            if (i >= 20 && i < 25 || i === 50) {
+                seat.classList.add('reserved');
+            }
+
+            seat.addEventListener('click', () => {
+                if (!seat.classList.contains('reserved')) {
+                    seat.classList.toggle('selected');
+                    updateSelectedCount();
+                }
+            });
+            grid.appendChild(seat);
+        }
+
+        function updateSelectedCount() {
+            const selectedSeats = document.querySelectorAll('.seat.selected');
+            selectedCount = selectedSeats.length;
+            countElement.textContent = selectedCount;
+        }
+
+        // Inicializar el conteo al cargar la página
+        updateSelectedCount();
+    </script>
+</body>
+</html>
+

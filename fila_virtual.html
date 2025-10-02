@@ -29,6 +29,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column; /* Para centrar la caja y el enlace debajo */
         }
         
         .waitlist-box {
@@ -97,6 +98,18 @@
             box-shadow: none;
             transform: none;
         }
+        
+        /* Estilo para el enlace de regreso */
+        .return-link {
+            color: var(--color-primary-neon);
+            margin-top: 2rem;
+            font-size: 1.1rem;
+            text-decoration: underline;
+            transition: color 0.3s;
+        }
+        .return-link:hover {
+            color: var(--color-secondary-neon);
+        }
 
     </style>
 </head>
@@ -116,6 +129,10 @@
         </a>
     </div>
 
+    <a href="index.html" class="return-link">
+        ← Volver a la página inicial de eventos
+    </a>
+    
     
     <script>
         const countdownElement = document.getElementById('countdown');
@@ -129,14 +146,12 @@
         let timerInterval;
 
         function startTimer() {
-            // Evita que el temporizador se inicie dos veces
             if (timerInterval) return; 
 
             timerInterval = setInterval(() => {
                 let minutes = Math.floor(totalTimeSeconds / 60);
                 let seconds = totalTimeSeconds % 60;
 
-                // Formatea el tiempo a MM:SS
                 let displayTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
                 countdownElement.textContent = displayTime;
 
@@ -145,10 +160,8 @@
                     countdownElement.textContent = "00:00";
                     
                     if (joinQueueBtn.disabled) {
-                        // El usuario estaba en la fila y su turno llegó
                         startPurchaseTimer();
                     } else {
-                        // El usuario NO estaba en la fila y se le acabó el tiempo
                         titleElement.textContent = "FILA CERRADA";
                         statusElement.innerHTML = "Lo sentimos, el tiempo de espera ha terminado. Las entradas restantes han sido liberadas.";
                         joinQueueBtn.style.display = 'none';
@@ -194,3 +207,5 @@
     </script>
 </body>
 </html>
+
+
