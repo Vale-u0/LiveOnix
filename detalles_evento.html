@@ -21,6 +21,8 @@
         }
 
 
+
+
         body {
             font-family: var(--font-body);
             color: var(--color-light-text);
@@ -34,6 +36,8 @@
             margin: 0 auto;
             padding: 2rem;
         }
+
+
 
 
         /* Enlace de Regreso */
@@ -50,6 +54,8 @@
         }
 
 
+
+
         /* Títulos */
         h1 {
             font-family: var(--font-heading);
@@ -62,6 +68,8 @@
         }
 
 
+
+
         /* Grid de Detalles y Asientos */
         .event-layout {
             display: grid;
@@ -70,12 +78,16 @@
         }
 
 
+
+
         .details-panel {
             background-color: #1A1A1A;
             padding: 2rem;
             border-radius: 10px;
             border: 1px solid rgba(0, 255, 255, 0.2);
         }
+
+
 
 
         .details-panel h2 {
@@ -100,10 +112,14 @@
         }
 
 
+
+
         /* Asientos (Mapa y Selección) */
         .seating-area {
             text-align: center;
         }
+
+
 
 
         .seating-map {
@@ -132,6 +148,8 @@
         }
 
 
+
+
         .seats-grid {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
@@ -139,6 +157,8 @@
             max-width: 400px;
             margin: 0 auto;
         }
+
+
 
 
         .seat {
@@ -152,10 +172,14 @@
         }
 
 
+
+
         .seat:hover {
             background-color: var(--color-primary-neon);
             transform: scale(1.2);
         }
+
+
 
 
         .seat.selected {
@@ -165,10 +189,14 @@
         }
 
 
+
+
         .seat.reserved {
             background-color: #555;
             cursor: not-allowed;
         }
+
+
 
 
         .seat-legend {
@@ -228,12 +256,16 @@
 <body>
 
 
+
+
     <div class="container">
         <a href="index.html" class="back-link">
             ← Volver a la lista de Eventos
         </a>
        
         <h1 id="main-title">Selecciona Tus Asientos</h1>
+
+
 
 
         <div class="event-layout">
@@ -265,6 +297,8 @@
             </div>
 
 
+
+
             <div class="seating-area">
                 <h2>Mapa de Asientos</h2>
                
@@ -282,6 +316,8 @@
                 </div>
 
 
+
+
                 <div style="background-color: #1A1A1A; padding: 1.5rem; border-radius: 10px;">
                    
                     <p style="font-size: 1.2rem; color: var(--color-light-text); margin-bottom: 1rem;">
@@ -291,6 +327,8 @@
                     <p id="advance-warning" style="color: #FF4444; font-size: 1.1rem; margin-bottom: 1rem; display: none;">
                         ⚠ Debes seleccionar al menos un asiento para continuar.
                     </p>
+
+
 
 
                     <p style="font-size: 1.5rem; color: var(--color-secondary-neon); margin-bottom: 1rem;">
@@ -304,8 +342,12 @@
             </div>
 
 
+
+
         </div>
     </div>
+
+
 
 
     <script>
@@ -321,9 +363,11 @@
                 artist: 'Evento Cósmico Especial',
                 venue: 'Estadio Principal (Ubicación por confirmar)',
                 date: 'Fecha por confirmar | 20:00 Horas',
-                price: 'Desde 150000 €',
+                price: 'Desde $200.000 COP',
                 description: 'No se encontraron detalles específicos. Por favor, vuelve al inicio para seleccionar un evento válido.'
             };
+
+
 
 
             // Lógica condicional (estática) basada en el ID
@@ -331,25 +375,27 @@
                 case 'maluma':
                     details.artist = 'MALUMA';
                     details.venue = 'El Campin';
-                    details.date = '15 Diciembre | 20:00 Horas';
-                    details.price = 'Desde 250000';
+                    details.date = '15 Diciembre 2025| 20:00 Horas';
+                    details.price = 'Desde $250.000 COP';
                     details.description = 'Disfruta del show de Reguetón y Pop Urbano más carismático del momento. El concierto de MALUMA es una fiesta con coreografías, luces impresionantes y todos los éxitos que te harán bailar.';
                     break;
                 case 'linkinpark':
                     details.artist = 'Linkin Park';
                     details.venue = 'El Campin';
-                    details.date = '22 Noviembre | 20:00 Horas';
-                    details.price = 'Desde 290000€';
+                    details.date = '22 Noviembre 2025| 20:00 Horas';
+                    details.price = 'Desde $290.000 COP';
                     details.description = 'La banda pionera del Nu Metal y Rock Alternativo regresa. Prepárate para un concierto de alta energía que fusiona guitarras pesadas, hip-hop y electrónica, reviviendo sus himnos emocionales.';
                     break;
                 case 'damianodavid':
                     details.artist = 'Damiano David';
                     details.venue = 'El Campin';
-                    details.date = '10 Enero | 20:00 Horas';
-                    details.price = 'Desde 230000 €';
+                    details.date = '10 Enero 2026| 20:00 Horas';
+                    details.price = 'Desde $230.000 COP';
                     details.description = 'El carismático líder de Måneskin presenta su proyecto en solitario. Un show de Rock Alternativo con influencias de Glam Rock y Pop, conocido por su inconfundible estilo y potente presencia escénica.';
                     break;
             }
+
+
 
 
             // Actualizar elementos DOM con los datos cargados estáticamente
@@ -362,9 +408,13 @@
         }
 
 
+
+
         // =======================================================
         // == 2. LÓGICA DE SELECCIÓN DE ASIENTOS Y RESTRICCIONES ==
         // =======================================================
+
+
 
 
         const grid = document.getElementById('seats-grid');
@@ -377,6 +427,8 @@
         const totalSeats = 100;
 
 
+
+
         // Generar 10 filas de 10 asientos
         for (let i = 0; i < totalSeats; i++) {
             const seat = document.createElement('div');
@@ -386,10 +438,14 @@
             seat.dataset.seatIndex = i;
 
 
+
+
             // Simular algunos asientos reservados
             if (i >= 20 && i < 25 || i === 50) {
                 seat.classList.add('reserved');
             }
+
+
 
 
             seat.addEventListener('click', () => {
@@ -406,10 +462,14 @@
         }
 
 
+
+
         function updateSelectedCount() {
             const selectedSeats = document.querySelectorAll('.seat.selected');
             selectedCount = selectedSeats.length;
             countElement.textContent = selectedCount;
+
+
 
 
             // Lógica para habilitar/deshabilitar el botón de avance
@@ -440,6 +500,8 @@
         }
 
 
+
+
         // Lógica de avance condicional
         checkoutBtn.addEventListener('click', (e) => {
             if (selectedCount > 0) {
@@ -453,11 +515,20 @@
 
 
 
+
+
+
+
         // Inicializar funciones al cargar la página
         loadEventDetails();
         updateSelectedCount();
     </script>
 </body>
 </html>
+
+
+
+
+
 
 
