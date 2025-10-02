@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comprar Tickets | Gira ECLIPSE</title>
+    <title>Comprar Tickets | Detalles del Evento</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-    
+   
     <style>
         /* Variables y Estilos Generales (Reutilizados del diseño principal) */
         :root {
@@ -20,6 +20,7 @@
             --font-body: 'Rajdhani', sans-serif;
         }
 
+
         body {
             font-family: var(--font-body);
             color: var(--color-light-text);
@@ -27,12 +28,27 @@
             line-height: 1.6;
             padding-top: 2rem;
         }
-        
+       
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
         }
+
+
+        /* Enlace de Regreso */
+        .back-link {
+            display: inline-block;
+            color: var(--color-primary-neon);
+            text-decoration: none;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            transition: color 0.3s;
+        }
+        .back-link:hover {
+            color: var(--color-secondary-neon);
+        }
+
 
         /* Títulos */
         h1 {
@@ -45,12 +61,14 @@
             margin-bottom: 2rem;
         }
 
+
         /* Grid de Detalles y Asientos */
         .event-layout {
             display: grid;
             grid-template-columns: 1fr 2fr;
             gap: 4rem;
         }
+
 
         .details-panel {
             background-color: #1A1A1A;
@@ -59,13 +77,14 @@
             border: 1px solid rgba(0, 255, 255, 0.2);
         }
 
+
         .details-panel h2 {
             font-family: var(--font-heading);
             font-size: 2rem;
             color: var(--color-primary-neon);
             margin-bottom: 1.5rem;
         }
-        
+       
         .info-group {
             margin-bottom: 1.5rem;
             padding-bottom: 10px;
@@ -80,10 +99,12 @@
             margin-bottom: 0.3rem;
         }
 
+
         /* Asientos (Mapa y Selección) */
         .seating-area {
             text-align: center;
         }
+
 
         .seating-map {
             background-color: #000000;
@@ -92,8 +113,12 @@
             border: 2px solid var(--color-secondary-neon);
             margin-bottom: 2rem;
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
-        
+       
         .stage {
             font-family: var(--font-heading);
             background-color: var(--color-primary-neon);
@@ -103,15 +128,18 @@
             border-radius: 5px;
             text-transform: uppercase;
             box-shadow: 0 0 15px var(--color-primary-neon);
+            width: 80%;
         }
+
 
         .seats-grid {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
             gap: 5px;
-            max-width: 400px; /* Limita el ancho del mapa */
+            max-width: 400px;
             margin: 0 auto;
         }
+
 
         .seat {
             width: 20px;
@@ -123,16 +151,25 @@
             margin: 2px;
         }
 
+
         .seat:hover {
             background-color: var(--color-primary-neon);
             transform: scale(1.2);
         }
+
 
         .seat.selected {
             background-color: var(--color-price);
             box-shadow: 0 0 8px var(--color-price);
             transform: scale(1.1);
         }
+
+
+        .seat.reserved {
+            background-color: #555;
+            cursor: not-allowed;
+        }
+
 
         .seat-legend {
             margin-top: 1.5rem;
@@ -150,8 +187,8 @@
             vertical-align: middle;
             margin-right: 5px;
         }
-
-        /* Botón de Fila (Mismo estilo que el principal) */
+       
+        /* Estilos del Botón y Advertencia */
         .btn {
             display: block;
             background-color: var(--color-primary-neon);
@@ -165,70 +202,78 @@
             box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
             text-transform: uppercase;
             text-align: center;
+            border: none;
+            cursor: pointer;
         }
-        .btn:hover {
+        .btn:hover:not(:disabled) {
             background-color: transparent;
             color: var(--color-primary-neon);
             transform: scale(1.02);
             box-shadow: 0 0 30px rgba(0, 255, 255, 1);
         }
-
-        /* JavaScript para Asientos */
-        .seat.reserved {
-            background-color: #555;
+        .btn:disabled {
+            background-color: #333;
             cursor: not-allowed;
+            box-shadow: none;
         }
-        
+       
         /* Media Query para responsividad de la grilla */
         @media (max-width: 1000px) {
             .event-layout {
-                grid-template-columns: 1fr; /* Una sola columna en pantallas pequeñas */
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
 
+
     <div class="container">
-        <h1>Selecciona Tus Asientos para Nova Star</h1>
+        <a href="index.html" class="back-link">
+            ← Volver a la lista de Eventos
+        </a>
+       
+        <h1 id="main-title">Selecciona Tus Asientos</h1>
+
 
         <div class="event-layout">
-            
+           
             <div class="details-panel">
                 <h2>Detalles del Evento</h2>
-                
+               
                 <div class="info-group">
                     <strong>Artista</strong>
-                    <p>Nova Star: Gira Eclipse</p>
+                    <p id="artist-name">Cargando...</p>
                 </div>
                 <div class="info-group">
                     <strong>Lugar</strong>
-                    <p>Estadio Planetario, Sector Alpha</p>
+                    <p id="event-venue">Cargando...</p>
                 </div>
                 <div class="info-group">
                     <strong>Fecha y Hora</strong>
-                    <p>Viernes, 15 de Diciembre 2025 | 20:00 Horas</p>
+                    <p id="event-date">Cargando...</p>
                 </div>
                 <div class="info-group">
                     <strong>Costo Base por Asiento</strong>
-                    <p style="color: var(--color-price); font-size: 1.8rem; font-family: var(--font-heading);">120 €</p>
+                    <p id="event-price" style="color: var(--color-price); font-size: 1.8rem; font-family: var(--font-heading);">0 €</p>
                 </div>
-                
+               
                 <div class="info-group" style="border-bottom: none;">
-                    <strong>Descripción</strong>
-                    <p>El show más esperado del año. Nova Star trae su mezcla de Pop Fusión y efectos visuales interestelares. ¡No te pierdas la noche más brillante de tu vida!</p>
+                    <strong>Descripción del Evento</strong>
+                    <p id="event-description">Cargando...</p>
                 </div>
             </div>
 
+
             <div class="seating-area">
                 <h2>Mapa de Asientos</h2>
-                
+               
                 <div class="seating-map">
-                    <div class="stage">Escenario - Iluminación Láser</div>
-                    
+                    <div class="stage">ESCENARIO PRINCIPAL</div>
+                   
                     <div class="seats-grid" id="seats-grid">
                         </div>
-                    
+                   
                     <div class="seat-legend">
                         <span><span class="color" style="background-color: #333;"></span> Disponible</span>
                         <span><span class="color" style="background-color: var(--color-price);"></span> Seleccionado</span>
@@ -236,53 +281,183 @@
                     </div>
                 </div>
 
+
                 <div style="background-color: #1A1A1A; padding: 1.5rem; border-radius: 10px;">
+                   
+                    <p style="font-size: 1.2rem; color: var(--color-light-text); margin-bottom: 1rem;">
+                        Descripción de la Última Selección: <span id="seat-description" style="color: var(--color-secondary-neon); font-family: var(--font-heading);">Ninguno.</span>
+                    </p>
+                   
+                    <p id="advance-warning" style="color: #FF4444; font-size: 1.1rem; margin-bottom: 1rem; display: none;">
+                        ⚠ Debes seleccionar al menos un asiento para continuar.
+                    </p>
+
+
                     <p style="font-size: 1.5rem; color: var(--color-secondary-neon); margin-bottom: 1rem;">
                         Asientos Seleccionados: <span id="selected-count" style="color: var(--color-price);">0</span>
                     </p>
-                    
-                    <a href="fila_virtual.html" class="btn" id="checkout-btn">
+                   
+                    <button class="btn" id="checkout-btn">
                         CONTINUAR A LA FILA DE COMPRA
-                    </a>
+                    </button>
                 </div>
             </div>
+
 
         </div>
     </div>
 
+
     <script>
+        // =======================================================
+        // == 1. LÓGICA DE CARGA ESTÁTICA CONDICIONAL DE DATOS ==
+        // =======================================================
+        function loadEventDetails() {
+            const urlParams = new URLSearchParams(window.location.search);
+            // Lee solo el ID simple de la URL
+            const artistId = urlParams.get('id');
+           
+            let details = {
+                artist: 'Evento Cósmico Especial',
+                venue: 'Estadio Principal (Ubicación por confirmar)',
+                date: 'Fecha por confirmar | 20:00 Horas',
+                price: 'Desde 150000 €',
+                description: 'No se encontraron detalles específicos. Por favor, vuelve al inicio para seleccionar un evento válido.'
+            };
+
+
+            // Lógica condicional (estática) basada en el ID
+            switch (artistId) {
+                case 'maluma':
+                    details.artist = 'MALUMA';
+                    details.venue = 'El Campin';
+                    details.date = '15 Diciembre | 20:00 Horas';
+                    details.price = 'Desde 250000';
+                    details.description = 'Disfruta del show de Reguetón y Pop Urbano más carismático del momento. El concierto de MALUMA es una fiesta con coreografías, luces impresionantes y todos los éxitos que te harán bailar.';
+                    break;
+                case 'linkinpark':
+                    details.artist = 'Linkin Park';
+                    details.venue = 'El Campin';
+                    details.date = '22 Noviembre | 20:00 Horas';
+                    details.price = 'Desde 290000€';
+                    details.description = 'La banda pionera del Nu Metal y Rock Alternativo regresa. Prepárate para un concierto de alta energía que fusiona guitarras pesadas, hip-hop y electrónica, reviviendo sus himnos emocionales.';
+                    break;
+                case 'damianodavid':
+                    details.artist = 'Damiano David';
+                    details.venue = 'El Campin';
+                    details.date = '10 Enero | 20:00 Horas';
+                    details.price = 'Desde 230000 €';
+                    details.description = 'El carismático líder de Måneskin presenta su proyecto en solitario. Un show de Rock Alternativo con influencias de Glam Rock y Pop, conocido por su inconfundible estilo y potente presencia escénica.';
+                    break;
+            }
+
+
+            // Actualizar elementos DOM con los datos cargados estáticamente
+            document.getElementById('main-title').textContent = `Selecciona Tus Asientos para ${details.artist}`;
+            document.getElementById('artist-name').textContent = details.artist;
+            document.getElementById('event-venue').textContent = details.venue;
+            document.getElementById('event-date').textContent = details.date;
+            document.getElementById('event-price').textContent = details.price;
+            document.getElementById('event-description').textContent = details.description;
+        }
+
+
+        // =======================================================
+        // == 2. LÓGICA DE SELECCIÓN DE ASIENTOS Y RESTRICCIONES ==
+        // =======================================================
+
+
         const grid = document.getElementById('seats-grid');
         const countElement = document.getElementById('selected-count');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        const advanceWarning = document.getElementById('advance-warning');
+        const seatDescription = document.getElementById('seat-description');
+       
         let selectedCount = 0;
+        const totalSeats = 100;
 
-        // Generar 10 filas de 10 asientos (100 asientos)
-        for (let i = 0; i < 100; i++) {
+
+        // Generar 10 filas de 10 asientos
+        for (let i = 0; i < totalSeats; i++) {
             const seat = document.createElement('div');
             seat.classList.add('seat');
-            
-            // Simular algunos asientos reservados 
+           
+            // Asignar un índice para calcular la Fila y Asiento
+            seat.dataset.seatIndex = i;
+
+
+            // Simular algunos asientos reservados
             if (i >= 20 && i < 25 || i === 50) {
                 seat.classList.add('reserved');
             }
 
+
             seat.addEventListener('click', () => {
                 if (!seat.classList.contains('reserved')) {
+                    const isSelecting = !seat.classList.contains('selected');
                     seat.classList.toggle('selected');
                     updateSelectedCount();
+                   
+                    // Actualizar descripción única
+                    updateSeatDescription(seat.dataset.seatIndex, isSelecting);
                 }
             });
             grid.appendChild(seat);
         }
 
+
         function updateSelectedCount() {
             const selectedSeats = document.querySelectorAll('.seat.selected');
             selectedCount = selectedSeats.length;
             countElement.textContent = selectedCount;
+
+
+            // Lógica para habilitar/deshabilitar el botón de avance
+            if (selectedCount > 0) {
+                checkoutBtn.disabled = false;
+                advanceWarning.style.display = 'none';
+            } else {
+                checkoutBtn.disabled = true;
+                advanceWarning.style.display = 'block';
+            }
+        }
+       
+        // Función para generar una descripción única para el asiento
+        function updateSeatDescription(index, isSelecting) {
+            const row = Math.floor(index / 10) + 1;
+            const position = (index % 10) + 1;
+            const zone = row <= 3 ? "VIP Delantera" : row <= 7 ? "General Central" : "General Trasera";
+           
+            if (isSelecting) {
+                seatDescription.textContent = `Fila ${row}, Asiento ${position} | Zona: ${zone} | Vista: ${zone === 'VIP Delantera' ? 'Excelente' : 'Buena'}.`;
+            } else {
+                if (document.querySelectorAll('.seat.selected').length === 0) {
+                     seatDescription.textContent = `Ninguno.`;
+                } else {
+                     seatDescription.textContent = `Último removido: Fila ${row}, Asiento ${position}.`;
+                }
+            }
         }
 
-        // Inicializar el conteo al cargar la página
+
+        // Lógica de avance condicional
+        checkoutBtn.addEventListener('click', (e) => {
+            if (selectedCount > 0) {
+                window.location.href = 'fila_virtual.html';
+            } else {
+                e.preventDefault();
+                advanceWarning.style.display = 'block';
+            }
+        });
+
+
+
+
+        // Inicializar funciones al cargar la página
+        loadEventDetails();
         updateSelectedCount();
     </script>
 </body>
 </html>
+
 

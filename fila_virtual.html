@@ -29,7 +29,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column; /* Para centrar la caja y el enlace debajo */
+            flex-direction: column;
         }
         
         .waitlist-box {
@@ -111,6 +111,12 @@
             color: var(--color-secondary-neon);
         }
 
+        .reset-info {
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 1rem;
+        }
+
     </style>
 </head>
 <body>
@@ -132,9 +138,25 @@
     <a href="index.html" class="return-link">
         ← Volver a la página inicial de eventos
     </a>
+
+    <div class="reset-info">
+        <p>Prueba (Solo desarrolladores): Esta es la visita n° <span id="access-number">1</span> de la sesión. El fallo se activa en el segundo intento.</p>
+    </div>
     
     
     <script>
+        // Clave de localStorage para el contador de accesos
+        const ACCESS_COUNT_KEY = 'liveonix_queue_access_count';
+        
+        // 1. Lógica de Conteo y Persistencia (localStorage)
+        let accessCount = localStorage.getItem(ACCESS_COUNT_KEY) ? parseInt(localStorage.getItem(ACCESS_COUNT_KEY)) : 0;
+        accessCount++;
+        localStorage.setItem(ACCESS_COUNT_KEY, accessCount);
+        
+        // Muestra el número de acceso
+        document.getElementById('access-number').textContent = accessCount;
+
+        // Elementos DOM
         const countdownElement = document.getElementById('countdown');
         const joinQueueBtn = document.getElementById('join-queue-btn');
         const accessPortalBtn = document.getElementById('access-portal-btn');
@@ -144,6 +166,47 @@
         // Duración del contador en segundos (15 minutos)
         let totalTimeSeconds = 15 * 60; 
         let timerInterval;
+
+        // =======================================================
+        // == FUNCIÓN: SIMULACIÓN DE SOBRECARGA ASÍNCRONA (LOAD TEST) ==
+        // =======================================================
+        function simularSobrecarga() {
+            // 1. Cambios visuales iniciales
+            titleElement.textContent = "¡ERROR CRÍTICO DEL SERVIDOR!";
+            statusElement.innerHTML = "La alta demanda ha provocado un fallo de sincronización. **Intentando procesar 50,000 solicitudes...**";
+            joinQueueBtn.textContent = "PROCESANDO FALLO...";
+            joinQueueBtn.disabled = true;
+            
+            let counter = 0;
+            const maxOperations = 50000;
+
+            function heavyWork() {
+                const batchSize = 1000; 
+                const startTime = Date.now();
+                
+                while (counter < maxOperations && (Date.now() - startTime) < 50) {
+                    let temp = Math.sqrt(counter * Math.random());
+                    counter++;
+                }
+                
+                if (counter < maxOperations) {
+                    statusElement.innerHTML = `**Procesando solicitud: ${counter} de ${maxOperations}**`;
+                    setTimeout(heavyWork, 1); 
+                } else {
+                    // 2. Resultado del Fallo
+                    titleElement.textContent = "SINCRONIZACIÓN FALLIDA";
+                    statusElement.innerHTML = "El servidor no pudo procesar la solicitud a tiempo. Regresa al inicio para reintentar.";
+                    joinQueueBtn.style.display = 'none';
+                    clearInterval(timerInterval); 
+                    countdownElement.textContent = "XX:XX";
+                    // Opción de reinicio para pruebas
+                    localStorage.removeItem(ACCESS_COUNT_KEY);
+                }
+            }
+            
+            heavyWork();
+        }
+        // =======================================================
 
         function startTimer() {
             if (timerInterval) return; 
@@ -159,7 +222,7 @@
                     clearInterval(timerInterval);
                     countdownElement.textContent = "00:00";
                     
-                    if (joinQueueBtn.disabled) {
+                    if (joinQueueBtn.disabled && joinQueueBtn.textContent !== "PROCESANDO FALLO...") {
                         startPurchaseTimer();
                     } else {
                         titleElement.textContent = "FILA CERRADA";
@@ -193,13 +256,20 @@
             }, 1000);
         }
 
+        // FUNCIÓN MODIFICADA: Lógica condicional del error
         function joinQueue() {
-            joinQueueBtn.disabled = true;
-            joinQueueBtn.textContent = "POSICIÓN ASEGURADA: ESPERANDO TURNO...";
-            joinQueueBtn.style.backgroundColor = '#555';
-            
-            titleElement.textContent = "EN FILA VIRTUAL";
-            statusElement.innerHTML = "Tu acceso se liberará cuando el contador de espera llegue a <strong style='color: var(--color-price);'>00:00</strong>. No cierres la ventana.";
+            if (accessCount > 1) {
+                // SEGUNDO ACCESO o posterior: Activamos el error
+                simularSobrecarga(); 
+            } else {
+                // PRIMER ACCESO: Comportamiento normal (simulación de éxito en la cola)
+                joinQueueBtn.disabled = true;
+                joinQueueBtn.textContent = "POSICIÓN ASEGURADA: ESPERANDO TURNO...";
+                joinQueueBtn.style.backgroundColor = '#555';
+                
+                titleElement.textContent = "EN FILA VIRTUAL (INTENTO 1)";
+                statusElement.innerHTML = "Tu acceso se liberará cuando el contador de espera llegue a <strong style='color: var(--color-price);'>00:00</strong>. No cierres la ventana.";
+            }
         }
 
         // Inicia el contador automáticamente al cargar la página

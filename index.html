@@ -4,26 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LiveOnix | Entradas Neón y Redirección de Fila</title>
-    
+   
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-    
+   
     <style>
         /* ======================================= */
         /* == ESTILOS CSS INTEGRADOS (NEON/DARK) == */
         /* ======================================= */
-        
+       
         /* Variables CSS (Fosforescentes) */
         :root {
-            --color-dark-bg: #0A0A0A; 
+            --color-dark-bg: #0A0A0A;
             --color-primary-neon: #00FFFF; /* Cian Eléctrico */
             --color-secondary-neon: #FF00FF; /* Magenta Eléctrico */
             --color-light-text: #EFEFEF;
             --color-price: #39FF14; /* Verde Lima Fosforescente */
-            --font-heading: 'Michroma', sans-serif; 
-            --font-body: 'Rajdhani', sans-serif; 
+            --font-heading: 'Michroma', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
         }
+
+
+
 
         /* Reset básico y generales */
         * {
@@ -31,6 +34,9 @@
             padding: 0;
             box-sizing: border-box;
         }
+
+
+
 
         body {
             font-family: var(--font-body);
@@ -44,9 +50,12 @@
             color: var(--color-primary-neon);
         }
 
+
+
+
         /* --- HEADER Y NAVEGACIÓN (ESTÁTICO) --- */
         header {
-            position: relative; 
+            position: relative;
             width: 100%;
             background: rgba(0, 0, 0, 0.95);
             padding: 1rem 0;
@@ -54,33 +63,48 @@
             box-shadow: 0 5px 20px rgba(255, 0, 255, 0.3);
         }
 
+
+
+
         nav {
             display: flex;
-            justify-content: space-between; 
+            justify-content: space-between;
             align-items: center;
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 2rem;
         }
 
+
+
+
         .logo {
             font-family: var(--font-heading);
             font-size: 2rem;
-            color: var(--color-primary-neon); 
+            color: var(--color-primary-neon);
             text-decoration: none;
             letter-spacing: 4px;
             text-shadow: 0 0 10px var(--color-primary-neon);
         }
 
+
+
+
         nav ul {
             list-style: none;
             display: flex;
-            margin-left: auto; 
+            margin-left: auto;
         }
+
+
+
 
         nav ul li {
             margin-left: 2.5rem;
         }
+
+
+
 
         nav ul li a {
             font-family: var(--font-body);
@@ -98,10 +122,13 @@
         }
         /* --- FIN HEADER --- */
 
-        
+
+
+
+       
         /* --- Paralaje y Hero --- */
         .parallax-wrapper {
-            height: 85vh; 
+            height: 85vh;
             overflow-x: hidden;
             overflow-y: auto;
             perspective: 1px;
@@ -142,6 +169,8 @@
         /* --- Fin Paralaje --- */
 
 
+
+
         /* --- Botones y Secciones --- */
         .btn {
             display: inline-block;
@@ -160,6 +189,9 @@
             text-transform: uppercase;
         }
 
+
+
+
         .btn:hover:not(:disabled) {
             background-color: transparent;
             color: var(--color-primary-neon);
@@ -167,12 +199,15 @@
             box-shadow: 0 0 30px rgba(0, 255, 255, 1), 0 0 50px rgba(0, 255, 255, 0.5);
         }
 
+
+
+
         section {
             padding: 6rem 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
-        
+       
         h2 {
             font-family: var(--font-heading);
             font-size: 3.5rem;
@@ -192,12 +227,15 @@
             box-shadow: 0 0 10px var(--color-secondary-neon);
         }
 
+
+
+
         .grid-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2.5rem;
         }
-        
+       
         /* Event Card Styles */
         .event-card {
             background-color: #1A1A1A;
@@ -258,10 +296,13 @@
 </head>
 <body>
 
+
+
+
     <header>
         <nav>
             <a href="#" class="logo">LIVEONIX</a>
-            
+           
             <ul>
                 <li><a href="#events">Eventos</a></li>
                 <li><a href="#artists">Artistas</a></li>
@@ -270,8 +311,11 @@
         </nav>
     </header>
 
+
+
+
     <div class="parallax-wrapper">
-        
+       
         <div class="parallax-group hero" id="home">
             <div class="parallax-layer back"></div>
             <div class="parallax-layer base hero-content">
@@ -280,65 +324,76 @@
                 </div>
         </div>
 
-        
+
+
+
+       
         <section id="events">
-            <h2>HEADLINERS CÓSMICOS</h2>
-            <div class="grid-container">
-                
-                <div class="event-card">
-                    <img src="https://picsum.photos/seed/nebula_star/450/300" alt="Nebulosa y Estrella">
-                    <div class="card-content">
-                        <h3>NOVA STAR</h3>
-                        <p class="details">Estadio Planetario | 15 Diciembre | Pop Fusión</p>
-                        <span class="price">Desde 120 €</span>
-                        <a href="detalles_evento.html" class="btn btn-ticket">VER DETALLES</a>
-                    </div>
-                </div>
-                
-                <div class="event-card">
-                    <img src="https://picsum.photos/seed/galaxy_dj/450/300" alt="Galaxia y DJ Set">
-                    <div class="card-content">
-                        <h3>CYBER BEAT</h3>
-                        <p class="details">Galaxia Club | 22 Noviembre | Future House</p>
-                        <span class="price">Desde 85 €</span>
-                        <a href="detalles_evento.html" class="btn btn-ticket">VER DETALLES</a>
-                    </div>
-                </div>
-                
-                <div class="event-card">
-                    <img src="https://picsum.photos/seed/rock_planet/450/300" alt="Superficie de Planeta">
-                    <div class="card-content">
-                        <h3>LOS ASTEROIDES</h3>
-                        <p class="details">Coliseo Interestelar | 10 Enero | Indie Rock</p>
-                        <span class="price">Desde 60 €</span>
-                        <a href="detalles_evento.html" class="btn btn-ticket">VER DETALLES</a>
-                    </div>
-                </div>
-                
-            </div>
+          <h2>HEADLINERS CÓSMICOS</h2>
+          <div class="grid-container">
+             
+              <div class="event-card">
+                  <img src="https://phantom-marca-mx.unidadeditorial.es/e06d9c352b9ca3b04459548a42750853/resize/1320/f/webp/mx/assets/multimedia/imagenes/2023/09/02/16936082852625.jpg">
+                  <div class="card-content">
+                      <h3>MALUMA</h3>
+                      <p class="details">El Campin | 15 Diciembre | Regueton</p>
+                      <span class="price">Desde 250000</span>
+                      <a href="detalles_evento.html?id=maluma" class="btn btn-ticket">VER DETALLES</a>
+                  </div>
+              </div>
+             
+              <div class="event-card">
+                  <img src="https://rtvc-assets-radionica3.s3.amazonaws.com/s3fs-public/styles/articulo_760x422/public/2025-03/linkinpark%20bogota%202025.jpg?itok=fwoxoTgB" alt="Galaxia y DJ Set">
+                  <div class="card-content">
+                      <h3>Linkin Park</h3>
+                      <p class="details">El Campin | 22 Noviembre | Rock Metal</p>
+                      <span class="price">Desde 290000€</span>
+                      <a href="detalles_evento.html?id=linkinpark" class="btn btn-ticket">VER DETALLES</a>
+                  </div>
+              </div>
+             
+              <div class="event-card">
+                  <img src="https://www.infobae.com/resizer/v2/RBCQ4YFUIBHJHH7KSIHH2TSZIY.jpg?auth=4f17f279607a4782dc87e68e327beeec30b7c681553f543ebadc51940740a274&smart=true&width=992&height=620&quality=85" alt="Superficie de Planeta">
+                  <div class="card-content">
+                      <h3>Damiano David</h3>
+                      <p class="details">El Campin | 10 Enero | Rock</p>
+                      <span class="price">Desde 230000 €</span>
+                      <a href="detalles_evento.html?id=damianodavid" class="btn btn-ticket">VER DETALLES</a>
+                  </div>
+              </div>
+             
+          </div>
         </section>
 
-        
+
+
+
+       
         <section id="contact" style="text-align: center;">
             <h2>CONTACTO CÓSMICO</h2>
             <p style="font-size: 1.2rem; max-width: 600px; margin: 0 auto 3rem; color: var(--color-secondary-neon);">¿Necesitas ayuda con tu entrada o tienes un evento que anunciar?</p>
             <a href="#" class="btn">Abrir Portal de Soporte</a>
         </section>
 
+
     </div>
+
+
+
 
     <footer>
         <div class="social-links">
-            <a href="#" aria-label="Instagram">IG</a> | 
-            <a href="#" aria-label="Twitter">TW</a> | 
+            <a href="#" aria-label="Instagram">IG</a> |
+            <a href="#" aria-label="Twitter">TW</a> |
             <a href="#" aria-label="Facebook">FB</a>
         </div>
         <p>&copy; 2023 LIVEONIX | Tecnología de Venta de Entradas Interestelar.</p>
     </footer>
 
+
+
+
 </body>
 </html>
-
-
 
 
