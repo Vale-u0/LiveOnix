@@ -1,281 +1,217 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fila Virtual | LiveOnix</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-    
-    <style>
-        /* Variables y Estilos Generales */
-        :root {
-            --color-dark-bg: #0A0A0A;
-            --color-primary-neon: #00FFFF; /* Cian */
-            --color-secondary-neon: #FF00FF; /* Magenta */
-            --color-light-text: #EFEFEF;
-            --color-price: #39FF14; /* Verde Lima */
-            --font-heading: 'Michroma', sans-serif;
-            --font-body: 'Rajdhani', sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fila Virtual | LiveOnix</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
 
-        body {
-            font-family: var(--font-body);
-            color: var(--color-light-text);
-            background-color: var(--color-dark-bg);
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-        
-        .waitlist-box {
-            background-color: #000000;
-            border: 3px solid var(--color-primary-neon);
-            padding: 4rem;
-            border-radius: 15px;
-            max-width: 800px;
-            margin: 2rem;
-            text-align: center;
-            box-shadow: 0 0 35px rgba(0, 255, 255, 0.5);
-        }
-
-        .waitlist-box h3 {
-            font-family: var(--font-heading);
-            font-size: 2.5rem;
-            color: var(--color-secondary-neon);
-            margin-bottom: 1.5rem;
-            text-shadow: 0 0 15px var(--color-secondary-neon);
-        }
-        .waitlist-box .timer {
-            font-family: var(--font-heading);
-            font-size: 5rem;
-            color: var(--color-price);
-            margin-bottom: 2rem;
-            text-shadow: 0 0 20px var(--color-price);
-        }
-        .waitlist-box p {
-            font-size: 1.3rem;
-            color: var(--color-light-text);
-            margin-bottom: 2rem;
-        }
-        
-        /* Botones y Estilos de Botones */
-        .btn {
-            display: inline-block;
-            padding: 1.2rem 3.5rem;
-            border-radius: 5px;
-            font-weight: 700;
-            font-family: var(--font-heading);
-            font-size: 1.3rem;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            border: none;
-            cursor: pointer;
-        }
-        .btn-magenta {
-            background-color: var(--color-secondary-neon);
-            color: var(--color-dark-bg);
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.7);
-        }
-        .btn-cian {
-            background-color: var(--color-primary-neon);
-            color: var(--color-dark-bg);
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
-            display: none; /* Inicialmente oculto */
-        }
-        .btn:hover:not(:disabled) {
-            transform: scale(1.05);
-            opacity: 0.9;
-        }
-        .btn:disabled {
-            background-color: #555;
-            color: #AAA;
-            cursor: not-allowed;
-            box-shadow: none;
-            transform: none;
-        }
-        
-        /* Estilo para el enlace de regreso */
-        .return-link {
-            color: var(--color-primary-neon);
-            margin-top: 2rem;
-            font-size: 1.1rem;
-            text-decoration: underline;
-            transition: color 0.3s;
-        }
-        .return-link:hover {
-            color: var(--color-secondary-neon);
-        }
-
-        .reset-info {
-            font-size: 0.9rem;
-            color: #777;
-            margin-top: 1rem;
-        }
-
-    </style>
+  <style>
+    :root {
+      --color-dark-bg: #0A0A0A;
+      --color-primary-neon: #00FFFF;
+      --color-secondary-neon: #FF00FF;
+      --color-light-text: #EFEFEF;
+      --color-price: #39FF14;
+      --font-heading: 'Michroma', sans-serif;
+      --font-body: 'Rajdhani', sans-serif;
+    }
+    body {
+      font-family: var(--font-body);
+      color: var(--color-light-text);
+      background-color: var(--color-dark-bg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    .waitlist-box {
+      background-color: #000;
+      border: 3px solid var(--color-primary-neon);
+      padding: 4rem;
+      border-radius: 15px;
+      max-width: 800px;
+      text-align: center;
+      box-shadow: 0 0 35px rgba(0,255,255,0.5);
+    }
+    .waitlist-box h3 {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      color: var(--color-secondary-neon);
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 15px var(--color-secondary-neon);
+    }
+    .timer {
+      font-family: var(--font-heading);
+      font-size: 5rem;
+      color: var(--color-price);
+      margin-bottom: 2rem;
+      text-shadow: 0 0 20px var(--color-price);
+    }
+    .btn {
+      display: inline-block;
+      padding: 1.2rem 3.5rem;
+      border-radius: 5px;
+      font-weight: 700;
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      margin: 10px;
+    }
+    .btn-magenta {
+      background-color: var(--color-secondary-neon);
+      color: var(--color-dark-bg);
+    }
+    .btn-cian {
+      background-color: var(--color-primary-neon);
+      color: var(--color-dark-bg);
+      display: none;
+    }
+    .return-link {
+      margin-top: 2rem;
+      color: var(--color-primary-neon);
+      text-decoration: underline;
+    }
+    #download-btn {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="waitlist-box">
-        <h3 id="waitlist-title">PREPARANDO SU LUGAR EN LA FILA VIRTUAL</h3>
-        <p id="waitlist-status">La fila está abierta. Haz clic abajo para asegurar tu posición y no perder el acceso a la compra:</p>
-        <div id="countdown" class="timer">15:00</div>
+  <div class="waitlist-box">
+    <h3 id="waitlist-title">PREPARANDO SU LUGAR EN LA FILA VIRTUAL</h3>
+    <p id="waitlist-status">La fila está abierta. Haz clic para asegurar tu posición:</p>
+    <div id="countdown" class="timer">15:00</div>
 
-        <button id="join-queue-btn" class="btn btn-magenta" onclick="joinQueue()">
-            PONERSE EN LA FILA AHORA
-        </button>
-        
-        <a id="access-portal-btn" href="#" class="btn btn-cian">
-            ACCEDER AL PORTAL DE COMPRA
-        </a>
-    </div>
+    <button id="join-queue-btn" class="btn btn-magenta" onclick="joinQueue()">PONERSE EN LA FILA AHORA</button>
+    <a id="access-portal-btn" href="#" class="btn btn-cian">ACCEDER AL PORTAL DE COMPRA</a>
+    <button id="download-btn" class="btn btn-cian" onclick="descargarUsuarios()">DESCARGAR USUARIOS FALLIDOS (JSON)</button>
+  </div>
 
-    <a href="index.html" class="return-link">
-        ← Volver a la página inicial de eventos
-    </a>
+  <a href="index.html" class="return-link">← Volver a la página inicial de eventos</a>
 
-    <div class="reset-info">
-        <p>Prueba (Solo desarrolladores): Esta es la visita n° <span id="access-number">1</span> de la sesión. El fallo se activa en el segundo intento.</p>
-    </div>
-    
-    
-    <script>
-        // Clave de localStorage para el contador de accesos
-        const ACCESS_COUNT_KEY = 'liveonix_queue_access_count';
-        
-        // 1. Lógica de Conteo y Persistencia (localStorage)
-        let accessCount = localStorage.getItem(ACCESS_COUNT_KEY) ? parseInt(localStorage.getItem(ACCESS_COUNT_KEY)) : 0;
-        accessCount++;
-        localStorage.setItem(ACCESS_COUNT_KEY, accessCount);
-        
-        // Muestra el número de acceso
-        document.getElementById('access-number').textContent = accessCount;
+  <script>
+    const ACCESS_COUNT_KEY = 'liveonix_queue_access_count';
+    let accessCount = parseInt(localStorage.getItem(ACCESS_COUNT_KEY) || "0") + 1;
+    localStorage.setItem(ACCESS_COUNT_KEY, accessCount);
 
-        // Elementos DOM
-        const countdownElement = document.getElementById('countdown');
-        const joinQueueBtn = document.getElementById('join-queue-btn');
-        const accessPortalBtn = document.getElementById('access-portal-btn');
-        const statusElement = document.getElementById('waitlist-status');
-        const titleElement = document.getElementById('waitlist-title');
+    const countdownElement = document.getElementById('countdown');
+    const joinQueueBtn = document.getElementById('join-queue-btn');
+    const accessPortalBtn = document.getElementById('access-portal-btn');
+    const statusElement = document.getElementById('waitlist-status');
+    const titleElement = document.getElementById('waitlist-title');
+    const downloadBtn = document.getElementById('download-btn');
 
-        // Duración del contador en segundos (15 minutos)
-        let totalTimeSeconds = 15 * 60; 
-        let timerInterval;
+    let totalTimeSeconds = 15 * 60; 
+    let timerInterval;
 
-        // =======================================================
-        // == FUNCIÓN: SIMULACIÓN DE SOBRECARGA ASÍNCRONA (LOAD TEST) ==
-        // =======================================================
-        function simularSobrecarga() {
-            // 1. Cambios visuales iniciales
-            titleElement.textContent = "¡ERROR CRÍTICO DEL SERVIDOR!";
-            statusElement.innerHTML = "La alta demanda ha provocado un fallo de sincronización. **Intentando procesar 50,000 solicitudes...**";
-            joinQueueBtn.textContent = "PROCESANDO FALLO...";
-            joinQueueBtn.disabled = true;
-            
-            let counter = 0;
-            const maxOperations = 50000;
+    // -------- Simulación de Sobrecarga --------
+    function simularSobrecarga() {
+      titleElement.textContent = "¡SOBRECARGA DE USUARIOS!";
+      statusElement.innerHTML = "Intentando registrar 50,000 usuarios...";
+      joinQueueBtn.textContent = "PROCESANDO...";
+      joinQueueBtn.disabled = true;
 
-            function heavyWork() {
-                const batchSize = 1000; 
-                const startTime = Date.now();
-                
-                while (counter < maxOperations && (Date.now() - startTime) < 50) {
-                    let temp = Math.sqrt(counter * Math.random());
-                    counter++;
-                }
-                
-                if (counter < maxOperations) {
-                    statusElement.innerHTML = `**Procesando solicitud: ${counter} de ${maxOperations}**`;
-                    setTimeout(heavyWork, 1); 
-                } else {
-                    // 2. Resultado del Fallo
-                    titleElement.textContent = "SINCRONIZACIÓN FALLIDA";
-                    statusElement.innerHTML = "El servidor no pudo procesar la solicitud a tiempo. Regresa al inicio para reintentar.";
-                    joinQueueBtn.style.display = 'none';
-                    clearInterval(timerInterval); 
-                    countdownElement.textContent = "XX:XX";
-                    // Opción de reinicio para pruebas
-                    localStorage.removeItem(ACCESS_COUNT_KEY);
-                }
-            }
-            
-            heavyWork();
+      let counter = 0;
+      const maxUsers = 50000;
+      const nombres = ["Ana","Carlos","Valentina","Juan","Laura","Pedro","Camila","Andrés","María","Jorge"];
+      const apellidos = ["Gómez","Rodríguez","Martínez","López","Hernández","Torres","Díaz","Ramírez","Moreno","Suárez"];
+      const usuariosGenerados = [];
+
+      function crearUsuario(id) {
+        const nombre = nombres[Math.floor(Math.random() * nombres.length)];
+        const apellido = apellidos[Math.floor(Math.random() * apellidos.length)];
+        const email = `${nombre.toLowerCase()}.${apellido.toLowerCase()}${id}@mail.com`;
+        return { id, nombreCompleto: `${nombre} ${apellido}`, email };
+      }
+
+      function heavyWork() {
+        const startTime = Date.now();
+        while (counter < maxUsers && (Date.now() - startTime) < 50) {
+          const user = crearUsuario(counter + 1);
+          if (counter < 500) usuariosGenerados.push(user);
+          if (counter % 1000 === 0) {
+            statusElement.innerHTML = `Registrando: <strong>${user.nombreCompleto}</strong> (${user.email})<br>Progreso: ${counter} de ${maxUsers}`;
+          }
+          counter++;
         }
-        // =======================================================
-
-        function startTimer() {
-            if (timerInterval) return; 
-
-            timerInterval = setInterval(() => {
-                let minutes = Math.floor(totalTimeSeconds / 60);
-                let seconds = totalTimeSeconds % 60;
-
-                let displayTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-                countdownElement.textContent = displayTime;
-
-                if (totalTimeSeconds <= 0) {
-                    clearInterval(timerInterval);
-                    countdownElement.textContent = "00:00";
-                    
-                    if (joinQueueBtn.disabled && joinQueueBtn.textContent !== "PROCESANDO FALLO...") {
-                        startPurchaseTimer();
-                    } else {
-                        titleElement.textContent = "FILA CERRADA";
-                        statusElement.innerHTML = "Lo sentimos, el tiempo de espera ha terminado. Las entradas restantes han sido liberadas.";
-                        joinQueueBtn.style.display = 'none';
-                    }
-                } else {
-                    totalTimeSeconds--;
-                }
-            }, 1000);
+        if (counter < maxUsers) {
+          setTimeout(heavyWork, 1); 
+        } else {
+          localStorage.setItem("usuarios_fallidos", JSON.stringify(usuariosGenerados));
+          titleElement.textContent = "REGISTRO FALLIDO POR SOBRECARGA";
+          statusElement.innerHTML = `El sistema intentó registrar demasiados usuarios y colapsó.<br>Se guardaron <strong>${usuariosGenerados.length}</strong> usuarios.`;
+          joinQueueBtn.style.display = 'none';
+          downloadBtn.style.display = 'inline-block';
+          clearInterval(timerInterval); 
+          countdownElement.textContent = "XX:XX";
+          localStorage.removeItem(ACCESS_COUNT_KEY);
         }
+      }
+      heavyWork();
+    }
 
-        function startPurchaseTimer() {
-            titleElement.textContent = "¡TU TURNO HA LLEGADO!";
-            statusElement.innerHTML = "¡Felicidades! Tienes <strong style='color: var(--color-price);'>3 minutos</strong> para completar tu compra antes de perder tu lugar.";
-            accessPortalBtn.style.display = 'inline-block';
-            
-            let purchaseTime = 3 * 60; 
-            let purchaseTimer = setInterval(() => {
-                let m = Math.floor(purchaseTime / 60);
-                let s = purchaseTime % 60;
-                countdownElement.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-                purchaseTime--;
-                
-                if (purchaseTime < 0) {
-                    clearInterval(purchaseTimer);
-                    titleElement.textContent = "TIEMPO DE COMPRA AGOTADO";
-                    statusElement.innerHTML = "Lo sentimos, tu tiempo de compra ha expirado. Vuelve al inicio para unirte a la fila nuevamente.";
-                    accessPortalBtn.style.display = 'none';
-                }
-            }, 1000);
+    // -------- Descarga protegida con contraseña --------
+    function descargarUsuarios() {
+      const password = prompt("Ingrese la contraseña para descargar los usuarios:");
+      if (password !== "CUN") {
+        alert("Contraseña incorrecta. Acceso denegado.");
+        return;
+      }
+      const data = localStorage.getItem("usuarios_fallidos");
+      if (!data) {
+        alert("No hay usuarios guardados.");
+        return;
+      }
+      const blob = new Blob([data], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "usuarios_fallidos.json";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // -------- Timer --------
+    function startTimer() {
+      if (timerInterval) return;
+      timerInterval = setInterval(() => {
+        let minutes = Math.floor(totalTimeSeconds / 60);
+        let seconds = totalTimeSeconds % 60;
+        countdownElement.textContent = `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+        if (totalTimeSeconds <= 0) {
+          clearInterval(timerInterval);
+          countdownElement.textContent = "00:00";
+          titleElement.textContent = "FILA CERRADA";
+          statusElement.innerHTML = "Tiempo de espera agotado.";
+          joinQueueBtn.style.display = 'none';
+        } else {
+          totalTimeSeconds--;
         }
+      }, 1000);
+    }
 
-        // FUNCIÓN MODIFICADA: Lógica condicional del error
-        function joinQueue() {
-            if (accessCount > 1) {
-                // SEGUNDO ACCESO o posterior: Activamos el error
-                simularSobrecarga(); 
-            } else {
-                // PRIMER ACCESO: Comportamiento normal (simulación de éxito en la cola)
-                joinQueueBtn.disabled = true;
-                joinQueueBtn.textContent = "POSICIÓN ASEGURADA: ESPERANDO TURNO...";
-                joinQueueBtn.style.backgroundColor = '#555';
-                
-                titleElement.textContent = "EN FILA VIRTUAL (INTENTO 1)";
-                statusElement.innerHTML = "Tu acceso se liberará cuando el contador de espera llegue a <strong style='color: var(--color-price);'>00:00</strong>. No cierres la ventana.";
-            }
-        }
+    function joinQueue() {
+      if (accessCount > 1) {
+        simularSobrecarga();
+      } else {
+        joinQueueBtn.disabled = true;
+        joinQueueBtn.textContent = "POSICIÓN ASEGURADA...";
+        joinQueueBtn.style.backgroundColor = '#555';
+        titleElement.textContent = "EN FILA VIRTUAL (INTENTO 1)";
+        statusElement.innerHTML = "Tu acceso se liberará al llegar a 00:00.";
+      }
+    }
 
-        // Inicia el contador automáticamente al cargar la página
-        startTimer();
-    </script>
+    startTimer();
+  </script>
 </body>
 </html>
-
-
