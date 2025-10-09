@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuario | LiveOnix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-dark-bg: #0A0A0A;
+            --color-primary-neon: #00FFFF;
+            --color-secondary-neon: #FF00FF;
+            --color-light-text: #EFEFEF;
+            --font-heading: 'Michroma', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+        }
+        body {
+            font-family: var(--font-body);
+            color: var(--color-light-text);
+            background-color: var(--color-dark-bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .form-container {
+            background-color: #1A1A1A;
+            border: 3px solid var(--color-primary-neon);
+            padding: 4rem;
+            border-radius: 15px;
+            max-width: 450px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+        }
+        #form-title {
+            font-family: var(--font-heading);
+            color: var(--color-secondary-neon);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px var(--color-secondary-neon);
+        }
+        .input-group {
+            text-align: left;
+            margin-bottom: 1.5rem;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--color-primary-neon);
+            font-weight: 600;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--color-primary-neon);
+            background-color: #000;
+            color: var(--color-light-text);
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        .btn-submit {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            cursor: pointer;
+            background-color: var(--color-secondary-neon);
+            color: var(--color-dark-bg);
+            transition: background-color 0.3s;
+            margin-top: 1.5rem;
+        }
+        .btn-submit:hover {
+            background-color: #FF80FF;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1 id="form-title">REGISTRO DE CUENTA</h1>
+        <form id="auth-form">
+            <div class="input-group" id="name-group">
+                <label for="name">Nombre Completo</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email Cósmico</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="input-group">
+                <label for="password">Contraseña Galáctica</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="btn-submit" id="submit-btn">
+                REGISTRAR Y CONTINUAR
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('auth-form');
+        const submitBtn = document.getElementById('submit-btn');
+        const REGISTERED_USER_KEY = 'liveonix_registered_user'; 
+        
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const name = document.getElementById('name').value;
+            
+            // ⭐ ACCIÓN CLAVE: Guardar datos en localStorage (SIMULACIÓN DE DB) ⭐
+            // Estos son los datos que se guardarán y que luego se usarán en la simulación de sobrecarga.
+            const userData = { 
+                id: 'REG-001-' + Date.now(), 
+                nombreCompleto: name, 
+                email: email, 
+                status: 'success' 
+            };
+            localStorage.setItem(REGISTERED_USER_KEY, JSON.stringify(userData));
+
+            submitBtn.textContent = `Registro Exitoso. Redirigiendo...`;
+            submitBtn.disabled = true;
+            
+            // Redireccionar al destino (ej: detalles_evento.html?id=maluma)
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectUrl = urlParams.get('redirect_to') || 'index.html';
+
+            setTimeout(() => {
+                window.location.href = redirectUrl; 
+            }, 1500); 
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALERTA DE SISTEMA | LiveOnix</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+   
+    <style>
+        :root {
+            --color-dark-bg: #0A0A0A;
+            --color-primary-neon: #00FFFF;
+            --color-secondary-neon: #FF00FF;
+            --color-light-text: #EFEFEF;
+            --color-error-red: #FF4444;
+            --font-heading: 'Michroma', sans-serif;
+            --font-body: 'Rajdhani', sans-serif;
+        }
+        body {
+            font-family: var(--font-body);
+            color: var(--color-light-text);
+            background-color: var(--color-dark-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+        }
+        .error-box {
+            background-color: #1A1A1A;
+            padding: 4rem;
+            border-radius: 15px;
+            max-width: 700px;
+            width: 90%;
+            border: 3px solid var(--color-error-red);
+            box-shadow: 0 0 40px rgba(255, 68, 68, 0.7);
+        }
+        h2 {
+            font-family: var(--font-heading);
+            color: var(--color-error-red);
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 15px var(--color-error-red);
+        }
+        p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            color: var(--color-light-text);
+        }
+        .btn {
+            display: inline-block;
+            background-color: var(--color-primary-neon);
+            color: var(--color-dark-bg);
+            padding: 1rem 3rem;
+            border-radius: 5px;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            text-decoration: none;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="error-box">
+        <h2>⚠️ FALLA CRÍTICA DE CONEXIÓN ⚠️</h2>
+        <p>
+            ¡Lo sentimos! El sistema ha colapsado debido a una sobrecarga de peticiones simultáneas.
+        </p>
+        <p id="user-confirmation" style="color: var(--color-secondary-neon);">
+            **¡TU REGISTRO FUE GUARDADO!** Aseguraremos tu lugar. Te contactaremos por correo electrónico una vez que el portal se estabilice.
+        </p>
+        
+        <a href="index.html" class="btn">Volver al Inicio</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const status = new URLSearchParams(window.location.search).get('status');
+            // Leemos el recuento que guardamos en fila_virtual.html antes de la simulación de envío a la BD
+            const count = localStorage.getItem('fallidos_count'); 
+            const confirmation = document.getElementById('user-confirmation');
+
+            if (status === 'overload' && count) {
+                // Confirmamos que el proceso se ejecutó y los datos fueron "enviados" a la BD
+                confirmation.innerHTML += `<br><span style="font-size: 0.9em; color: var(--color-error-red);">Se **ENVIARON** ${count} registros fallidos al servidor (BD) para su revisión y posterior re-procesamiento.</span>`;
+            } else {
+                 confirmation.textContent = "El sistema ha detectado una anomalía. Por favor, intenta de nuevo más tarde.";
+            }
+            // Limpiamos el contador de fallidos para la próxima vez
+            localStorage.removeItem('fallidos_count');
+        });
+    </script>
+</body>
+</html>

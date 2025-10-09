@@ -67,18 +67,10 @@
       background-color: var(--color-secondary-neon);
       color: var(--color-dark-bg);
     }
-    .btn-cian {
-      background-color: var(--color-primary-neon);
-      color: var(--color-dark-bg);
-      display: none;
-    }
     .return-link {
       margin-top: 2rem;
       color: var(--color-primary-neon);
       text-decoration: underline;
-    }
-    #download-btn {
-      display: none;
     }
   </style>
 </head>
@@ -90,31 +82,47 @@
     <div id="countdown" class="timer">15:00</div>
 
     <button id="join-queue-btn" class="btn btn-magenta" onclick="joinQueue()">PONERSE EN LA FILA AHORA</button>
-    <a id="access-portal-btn" href="#" class="btn btn-cian">ACCEDER AL PORTAL DE COMPRA</a>
-    <button id="download-btn" class="btn btn-cian" onclick="descargarUsuarios()">DESCARGAR USUARIOS FALLIDOS (JSON)</button>
   </div>
 
   <a href="index.html" class="return-link">← Volver a la página inicial de eventos</a>
 
   <script>
     const ACCESS_COUNT_KEY = 'liveonix_queue_access_count';
+    const REGISTERED_USER_KEY = 'liveonix_registered_user'; 
     let accessCount = parseInt(localStorage.getItem(ACCESS_COUNT_KEY) || "0") + 1;
     localStorage.setItem(ACCESS_COUNT_KEY, accessCount);
 
     const countdownElement = document.getElementById('countdown');
     const joinQueueBtn = document.getElementById('join-queue-btn');
-    const accessPortalBtn = document.getElementById('access-portal-btn');
     const statusElement = document.getElementById('waitlist-status');
     const titleElement = document.getElementById('waitlist-title');
-    const downloadBtn = document.getElementById('download-btn');
 
     let totalTimeSeconds = 15 * 60; 
     let timerInterval;
 
-    // -------- Simulación de Sobrecarga --------
+    // ⭐ FUNCIÓN CLAVE: SIMULA EL ENVÍO DE DATOS A TU SCRIPT PHP ⭐
+    // Esta función debe ser reemplazada por tu código AJAX/Fetch para enviar a tu script PHP real.
+    function enviarUsuariosFallidosAlServidor(usuarios) {
+        // Aquí iría tu código de JavaScript para enviar los datos (JSON.stringify(usuarios))
+        // al script PHP que se conecta a MySQL.
+        
+        console.log(`[SIMULACIÓN DE ENVÍO] Enviando ${usuarios.length} registros fallidos a la BD...`);
+        console.log("Datos del usuario registrado (el primero en la lista):", usuarios[0]);
+        
+        // Simulación exitosa: Guardamos el recuento para mostrarlo en la página de error
+        localStorage.setItem('fallidos_count', usuarios.length);
+        
+        // Redirigir a la página de error visual
+        setTimeout(() => {
+            window.location.href = 'sobrecarga_server.html?status=overload'; 
+        }, 3000);
+    }
+    
+
+    // -------- Simulación de Sobrecarga (INCLUYE AL REGISTRADO) --------
     function simularSobrecarga() {
       titleElement.textContent = "¡SOBRECARGA DE USUARIOS!";
-      statusElement.innerHTML = "Intentando registrar 50,000 usuarios...";
+      statusElement.innerHTML = "Intentando registrar 50,000 usuarios y enviando fallidos al servidor...";
       joinQueueBtn.textContent = "PROCESANDO...";
       joinQueueBtn.disabled = true;
 
@@ -122,20 +130,34 @@
       const maxUsers = 50000;
       const nombres = ["Ana","Carlos","Valentina","Juan","Laura","Pedro","Camila","Andrés","María","Jorge"];
       const apellidos = ["Gómez","Rodríguez","Martínez","López","Hernández","Torres","Díaz","Ramírez","Moreno","Suárez"];
-      const usuariosGenerados = [];
+      let usuariosGenerados = [];
+      const MAX_USERS_TO_COLLECT = 500; 
+
+      // 1. INCLUIR AL USUARIO REGISTRADO EN LA LISTA DE FALLIDOS
+      const registeredUserData = localStorage.getItem(REGISTERED_USER_KEY);
+      
+      if (registeredUserData) {
+          const registeredUser = JSON.parse(registeredUserData);
+          registeredUser.status = 'fallido - registrado previamente (BD)';
+          usuariosGenerados.push(registeredUser);
+      }
 
       function crearUsuario(id) {
         const nombre = nombres[Math.floor(Math.random() * nombres.length)];
         const apellido = apellidos[Math.floor(Math.random() * apellidos.length)];
         const email = `${nombre.toLowerCase()}.${apellido.toLowerCase()}${id}@mail.com`;
-        return { id, nombreCompleto: `${nombre} ${apellido}`, email };
+        return { id: id.toString(), nombreCompleto: `${nombre} ${apellido}`, email, status: 'fallido - nuevo' };
       }
 
       function heavyWork() {
         const startTime = Date.now();
         while (counter < maxUsers && (Date.now() - startTime) < 50) {
           const user = crearUsuario(counter + 1);
-          if (counter < 500) usuariosGenerados.push(user);
+          
+          if (usuariosGenerados.length < MAX_USERS_TO_COLLECT) {
+             usuariosGenerados.push(user);
+          }
+
           if (counter % 1000 === 0) {
             statusElement.innerHTML = `Registrando: <strong>${user.nombreCompleto}</strong> (${user.email})<br>Progreso: ${counter} de ${maxUsers}`;
           }
@@ -144,70 +166,64 @@
         if (counter < maxUsers) {
           setTimeout(heavyWork, 1); 
         } else {
-          localStorage.setItem("usuarios_fallidos", JSON.stringify(usuariosGenerados));
-          titleElement.textContent = "REGISTRO FALLIDO POR SOBRECARGA";
-          statusElement.innerHTML = `El sistema intentó registrar demasiados usuarios y colapsó.<br>Se guardaron <strong>${usuariosGenerados.length}</strong> usuarios.`;
-          joinQueueBtn.style.display = 'none';
-          downloadBtn.style.display = 'inline-block';
+          
           clearInterval(timerInterval); 
           countdownElement.textContent = "XX:XX";
           localStorage.removeItem(ACCESS_COUNT_KEY);
+
+          // 2. LLAMAR A LA FUNCIÓN QUE SIMULA EL ENVÍO A LA BD
+          enviarUsuariosFallidosAlServidor(usuariosGenerados);
         }
       }
       heavyWork();
     }
-
-    // -------- Descarga protegida con contraseña --------
-    function descargarUsuarios() {
-      const password = prompt("Ingrese la contraseña para descargar los usuarios:");
-      if (password !== "CUN") {
-        alert("Contraseña incorrecta. Acceso denegado.");
-        return;
-      }
-      const data = localStorage.getItem("usuarios_fallidos");
-      if (!data) {
-        alert("No hay usuarios guardados.");
-        return;
-      }
-      const blob = new Blob([data], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "usuarios_fallidos.json";
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-
-    // -------- Timer --------
+    
+    // -------- Timer y Lógica de Fila --------
     function startTimer() {
-      if (timerInterval) return;
-      timerInterval = setInterval(() => {
-        let minutes = Math.floor(totalTimeSeconds / 60);
-        let seconds = totalTimeSeconds % 60;
-        countdownElement.textContent = `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
-        if (totalTimeSeconds <= 0) {
-          clearInterval(timerInterval);
-          countdownElement.textContent = "00:00";
-          titleElement.textContent = "FILA CERRADA";
-          statusElement.innerHTML = "Tiempo de espera agotado.";
-          joinQueueBtn.style.display = 'none';
-        } else {
-          totalTimeSeconds--;
-        }
-      }, 1000);
+        if (timerInterval) return;
+        timerInterval = setInterval(() => {
+            let minutes = Math.floor(totalTimeSeconds / 60);
+            let seconds = totalTimeSeconds % 60;
+            countdownElement.textContent = `${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}`;
+            if (totalTimeSeconds <= 0) {
+                clearInterval(timerInterval);
+                countdownElement.textContent = "00:00";
+                titleElement.textContent = "FILA CERRADA";
+                statusElement.innerHTML = "Tiempo de espera agotado.";
+                joinQueueBtn.style.display = 'none';
+            } else {
+                totalTimeSeconds--;
+            }
+        }, 1000);
     }
 
     function joinQueue() {
+      // Validar que el usuario se haya registrado
+      const registeredUserData = localStorage.getItem(REGISTERED_USER_KEY);
+      if (!registeredUserData) {
+          alert("Debes registrarte o iniciar sesión primero para asegurar tus asientos.");
+          window.location.href = 'registro_usuario.html'; 
+          return;
+      }
+      
       if (accessCount > 1) {
+        // Sobrecarga si es el segundo intento o más
         simularSobrecarga();
       } else {
+        // LÓGICA DE ÉXITO (Primer intento)
+        
+        clearInterval(timerInterval);
         joinQueueBtn.disabled = true;
-        joinQueueBtn.textContent = "POSICIÓN ASEGURADA...";
-        joinQueueBtn.style.backgroundColor = '#555';
-        titleElement.textContent = "EN FILA VIRTUAL (INTENTO 1)";
-        statusElement.innerHTML = "Tu acceso se liberará al llegar a 00:00.";
+        joinQueueBtn.textContent = "POSICIÓN ASEGURADA, CONTINUANDO...";
+        joinQueueBtn.style.backgroundColor = 'var(--color-price)';
+        titleElement.textContent = "ACCESO CONCEDIDO";
+        statusElement.innerHTML = "Tu posición ha sido asegurada. Redirigiendo a la página de pago...";
+        countdownElement.textContent = "✅"; 
+
+        // Redirige a la página de pago
+        setTimeout(() => {
+            window.location.href = 'pago_final.html'; // Debes crear pago_final.html
+        }, 3000); 
       }
     }
 

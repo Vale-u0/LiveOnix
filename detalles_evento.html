@@ -7,9 +7,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-   
+    
     <style>
-        /* Variables y Estilos Generales (Reutilizados del diseño principal) */
+        /* Variables y Estilos Generales (Diseño Neón) */
         :root {
             --color-dark-bg: #0A0A0A;
             --color-primary-neon: #00FFFF; /* Cian */
@@ -20,8 +20,31 @@
             --font-body: 'Rajdhani', sans-serif;
         }
 
+        /* ⭐ CSS de Fondo Animado ⭐ */
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(-45deg, #0A0A0A 0%, var(--color-secondary-neon) 20%, var(--color-dark-bg) 50%, var(--color-primary-neon) 80%, #0A0A0A 100%);
+            background-size: 400% 400%;
+            animation: neon-flow 25s ease infinite;
+            opacity: 0.2;
+        }
 
-
+        @keyframes neon-flow {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
 
         body {
             font-family: var(--font-body);
@@ -29,16 +52,16 @@
             background-color: var(--color-dark-bg);
             line-height: 1.6;
             padding-top: 2rem;
+            min-height: 100vh;
         }
-       
+        
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
+            position: relative; 
+            z-index: 10;
         }
-
-
-
 
         /* Enlace de Regreso */
         .back-link {
@@ -53,9 +76,6 @@
             color: var(--color-secondary-neon);
         }
 
-
-
-
         /* Títulos */
         h1 {
             font-family: var(--font-heading);
@@ -67,18 +87,12 @@
             margin-bottom: 2rem;
         }
 
-
-
-
         /* Grid de Detalles y Asientos */
         .event-layout {
             display: grid;
             grid-template-columns: 1fr 2fr;
             gap: 4rem;
         }
-
-
-
 
         .details-panel {
             background-color: #1A1A1A;
@@ -87,16 +101,13 @@
             border: 1px solid rgba(0, 255, 255, 0.2);
         }
 
-
-
-
         .details-panel h2 {
             font-family: var(--font-heading);
             font-size: 2rem;
             color: var(--color-primary-neon);
             margin-bottom: 1.5rem;
         }
-       
+        
         .info-group {
             margin-bottom: 1.5rem;
             padding-bottom: 10px;
@@ -111,16 +122,10 @@
             margin-bottom: 0.3rem;
         }
 
-
-
-
         /* Asientos (Mapa y Selección) */
         .seating-area {
             text-align: center;
         }
-
-
-
 
         .seating-map {
             background-color: #000000;
@@ -129,12 +134,12 @@
             border: 2px solid var(--color-secondary-neon);
             margin-bottom: 2rem;
             box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
-            min-height: 400px;
+            min-height: 400px; 
             display: flex;
             flex-direction: column;
             align-items: center;
         }
-       
+        
         .stage {
             font-family: var(--font-heading);
             background-color: var(--color-primary-neon);
@@ -147,9 +152,6 @@
             width: 80%;
         }
 
-
-
-
         .seats-grid {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
@@ -157,9 +159,6 @@
             max-width: 400px;
             margin: 0 auto;
         }
-
-
-
 
         .seat {
             width: 20px;
@@ -171,16 +170,10 @@
             margin: 2px;
         }
 
-
-
-
         .seat:hover {
             background-color: var(--color-primary-neon);
             transform: scale(1.2);
         }
-
-
-
 
         .seat.selected {
             background-color: var(--color-price);
@@ -188,16 +181,10 @@
             transform: scale(1.1);
         }
 
-
-
-
         .seat.reserved {
             background-color: #555;
             cursor: not-allowed;
         }
-
-
-
 
         .seat-legend {
             margin-top: 1.5rem;
@@ -215,7 +202,7 @@
             vertical-align: middle;
             margin-right: 5px;
         }
-       
+        
         /* Estilos del Botón y Advertencia */
         .btn {
             display: block;
@@ -244,7 +231,7 @@
             cursor: not-allowed;
             box-shadow: none;
         }
-       
+        
         /* Media Query para responsividad de la grilla */
         @media (max-width: 1000px) {
             .event-layout {
@@ -255,24 +242,20 @@
 </head>
 <body>
 
-
-
+    <div class="animated-background"></div>
 
     <div class="container">
         <a href="index.html" class="back-link">
             ← Volver a la lista de Eventos
         </a>
-       
+        
         <h1 id="main-title">Selecciona Tus Asientos</h1>
 
-
-
-
         <div class="event-layout">
-           
+            
             <div class="details-panel">
                 <h2>Detalles del Evento</h2>
-               
+                
                 <div class="info-group">
                     <strong>Artista</strong>
                     <p id="artist-name">Cargando...</p>
@@ -286,28 +269,25 @@
                     <p id="event-date">Cargando...</p>
                 </div>
                 <div class="info-group">
-                    <strong>Costo Base por Asiento</strong>
+                    <strong>Costo Base por Asiento (Zona Trasera)</strong>
                     <p id="event-price" style="color: var(--color-price); font-size: 1.8rem; font-family: var(--font-heading);">0 €</p>
                 </div>
-               
+                
                 <div class="info-group" style="border-bottom: none;">
                     <strong>Descripción del Evento</strong>
                     <p id="event-description">Cargando...</p>
                 </div>
             </div>
 
-
-
-
             <div class="seating-area">
                 <h2>Mapa de Asientos</h2>
-               
+                
                 <div class="seating-map">
                     <div class="stage">ESCENARIO PRINCIPAL</div>
-                   
+                    
                     <div class="seats-grid" id="seats-grid">
                         </div>
-                   
+                    
                     <div class="seat-legend">
                         <span><span class="color" style="background-color: #333;"></span> Disponible</span>
                         <span><span class="color" style="background-color: var(--color-price);"></span> Seleccionado</span>
@@ -315,164 +295,196 @@
                     </div>
                 </div>
 
-
-
-
                 <div style="background-color: #1A1A1A; padding: 1.5rem; border-radius: 10px;">
-                   
+                    
                     <p style="font-size: 1.2rem; color: var(--color-light-text); margin-bottom: 1rem;">
                         Descripción de la Última Selección: <span id="seat-description" style="color: var(--color-secondary-neon); font-family: var(--font-heading);">Ninguno.</span>
                     </p>
-                   
+                    
                     <p id="advance-warning" style="color: #FF4444; font-size: 1.1rem; margin-bottom: 1rem; display: none;">
                         ⚠ Debes seleccionar al menos un asiento para continuar.
                     </p>
 
-
-
-
                     <p style="font-size: 1.5rem; color: var(--color-secondary-neon); margin-bottom: 1rem;">
                         Asientos Seleccionados: <span id="selected-count" style="color: var(--color-price);">0</span>
                     </p>
-                   
+                    
+                    <p style="font-size: 1.8rem; color: var(--color-light-text); margin-bottom: 1.5rem; border-top: 1px solid #2C2C2C; padding-top: 15px; margin-top: 15px;">
+                        Costo Total: <span id="total-cost" style="color: var(--color-price); font-family: var(--font-heading);">0 COP</span>
+                    </p>
+                    
                     <button class="btn" id="checkout-btn">
                         CONTINUAR A LA FILA DE COMPRA
                     </button>
                 </div>
             </div>
 
-
-
-
         </div>
     </div>
 
-
-
-
     <script>
         // =======================================================
-        // == 1. LÓGICA DE CARGA ESTÁTICA CONDICIONAL DE DATOS ==
+        // == CONFIGURACIÓN Y DECLARACIÓN DE VARIABLES ==
         // =======================================================
-        function loadEventDetails() {
-            const urlParams = new URLSearchParams(window.location.search);
-            // Lee solo el ID simple de la URL
-            const artistId = urlParams.get('id');
-           
-            let details = {
-                artist: 'Evento Cósmico Especial',
-                venue: 'Estadio Principal (Ubicación por confirmar)',
-                date: 'Fecha por confirmar | 20:00 Horas',
-                price: 'Desde $200.000 COP',
-                description: 'No se encontraron detalles específicos. Por favor, vuelve al inicio para seleccionar un evento válido.'
-            };
-
-
-
-
-            // Lógica condicional (estática) basada en el ID
-            switch (artistId) {
-                case 'maluma':
-                    details.artist = 'MALUMA';
-                    details.venue = 'El Campin';
-                    details.date = '15 Diciembre 2025| 20:00 Horas';
-                    details.price = 'Desde $250.000 COP';
-                    details.description = 'Disfruta del show de Reguetón y Pop Urbano más carismático del momento. El concierto de MALUMA es una fiesta con coreografías, luces impresionantes y todos los éxitos que te harán bailar.';
-                    break;
-                case 'linkinpark':
-                    details.artist = 'Linkin Park';
-                    details.venue = 'El Campin';
-                    details.date = '22 Noviembre 2025| 20:00 Horas';
-                    details.price = 'Desde $290.000 COP';
-                    details.description = 'La banda pionera del Nu Metal y Rock Alternativo regresa. Prepárate para un concierto de alta energía que fusiona guitarras pesadas, hip-hop y electrónica, reviviendo sus himnos emocionales.';
-                    break;
-                case 'damianodavid':
-                    details.artist = 'Damiano David';
-                    details.venue = 'El Campin';
-                    details.date = '10 Enero 2026| 20:00 Horas';
-                    details.price = 'Desde $230.000 COP';
-                    details.description = 'El carismático líder de Måneskin presenta su proyecto en solitario. Un show de Rock Alternativo con influencias de Glam Rock y Pop, conocido por su inconfundible estilo y potente presencia escénica.';
-                    break;
-            }
-
-
-
-
-            // Actualizar elementos DOM con los datos cargados estáticamente
-            document.getElementById('main-title').textContent = `Selecciona Tus Asientos para ${details.artist}`;
-            document.getElementById('artist-name').textContent = details.artist;
-            document.getElementById('event-venue').textContent = details.venue;
-            document.getElementById('event-date').textContent = details.date;
-            document.getElementById('event-price').textContent = details.price;
-            document.getElementById('event-description').textContent = details.description;
-        }
-
-
-
-
-        // =======================================================
-        // == 2. LÓGICA DE SELECCIÓN DE ASIENTOS Y RESTRICCIONES ==
-        // =======================================================
-
-
-
-
+        const REGISTERED_USER_KEY = 'liveonix_registered_user';
+        
         const grid = document.getElementById('seats-grid');
         const countElement = document.getElementById('selected-count');
         const checkoutBtn = document.getElementById('checkout-btn');
         const advanceWarning = document.getElementById('advance-warning');
         const seatDescription = document.getElementById('seat-description');
-       
+        const totalCostElement = document.getElementById('total-cost');
+        
         let selectedCount = 0;
         const totalSeats = 100;
+        let eventBasePrice = 0; 
+        let currentEventDetails = {}; 
+        
+        // Multiplicadores de costo por zona (basado en el costo base)
+        const PRICE_TIERS = {
+            'VIP Delantera': 1.5, // Filas 1-3
+            'General Central': 1.2, // Filas 4-7
+            'General Trasera': 1.0  // Filas 8-10 (Costo Base)
+        };
 
+        const urlParams = new URLSearchParams(window.location.search);
+        const artistId = urlParams.get('id');
 
+        // =======================================================
+        // == 0. VALIDACIÓN DE REGISTRO AL CARGAR LA PÁGINA ==
+        // =======================================================
+        if (!localStorage.getItem(REGISTERED_USER_KEY)) {
+            alert("Debes registrarte o iniciar sesión primero para asegurar tus asientos.");
+            // La redirección aquí debe ser relativa a donde se encuentra este archivo.
+            window.location.href = `registro_usuario.html?redirect_to=detalles_evento.html%3Fid%3D${artistId || 'default'}`;
+            throw new Error("Redirigiendo a registro."); 
+        }
 
+        // =======================================================
+        // == 1. LÓGICA DE CARGA ESTÁTICA CONDICIONAL DE DATOS ==
+        // =======================================================
+        function loadEventDetails() {
+            let details = {
+                id: artistId, 
+                artist: 'Evento Cósmico Especial',
+                venue: 'Estadio Principal (Ubicación por confirmar)',
+                date: 'Fecha por confirmar | 20:00 Horas',
+                price: 150000, 
+                description: 'No se encontraron detalles específicos.'
+            };
 
-        // Generar 10 filas de 10 asientos
+            switch (artistId) {
+                case 'maluma':
+                    details.artist = 'MALUMA';
+                    details.venue = 'El Campin';
+                    details.date = '15 Diciembre | 20:00 Horas';
+                    details.price = 250000;
+                    details.description = 'Disfruta del show de Reguetón y Pop Urbano más carismático del momento.';
+                    break;
+                case 'linkinpark':
+                    details.artist = 'Linkin Park';
+                    details.venue = 'El Campin';
+                    details.date = '22 Noviembre | 20:00 Horas';
+                    details.price = 290000;
+                    details.description = 'La banda pionera del Nu Metal y Rock Alternativo regresa.';
+                    break;
+                case 'damianodavid':
+                    details.artist = 'Damiano David';
+                    details.venue = 'El Campin';
+                    details.date = '10 Enero | 20:00 Horas';
+                    details.price = 230000;
+                    details.description = 'El carismático líder de Måneskin presenta su proyecto en solitario.';
+                    break;
+            }
+
+            eventBasePrice = details.price;
+            currentEventDetails = details; 
+
+            const formattedBasePrice = eventBasePrice.toLocaleString('es-CO', { 
+                style: 'currency', 
+                currency: 'COP', 
+                minimumFractionDigits: 0 
+            });
+
+            document.getElementById('main-title').textContent = `Selecciona Tus Asientos para ${details.artist}`;
+            document.getElementById('artist-name').textContent = details.artist;
+            document.getElementById('event-venue').textContent = details.venue;
+            document.getElementById('event-date').textContent = details.date;
+            document.getElementById('event-price').textContent = formattedBasePrice;
+            document.getElementById('event-description').textContent = details.description;
+        }
+
+        // =======================================================
+        // == 2. CÁLCULO DE COSTOS POR POSICIÓN Y TOTAL ==
+        // =======================================================
+
+        function getSeatZone(index) {
+            const row = Math.floor(index / 10); // Row 0-9
+            if (row < 3) { // Filas 1-3 (índice 0-29)
+                return 'VIP Delantera';
+            } else if (row < 7) { // Filas 4-7 (índice 30-69)
+                return 'General Central';
+            } else { // Filas 8-10 (índice 70-99)
+                return 'General Trasera';
+            }
+        }
+
+        function getSeatPrice(index) {
+            const zone = getSeatZone(index);
+            const multiplier = PRICE_TIERS[zone];
+            return eventBasePrice * multiplier; 
+        }
+
+        function calculateTotalCost() {
+            const selectedSeats = document.querySelectorAll('.seat.selected');
+            let total = 0;
+            
+            selectedSeats.forEach(seat => {
+                const index = parseInt(seat.dataset.seatIndex);
+                total += getSeatPrice(index); 
+            });
+            
+            const formattedTotal = total.toLocaleString('es-CO', { 
+                style: 'currency', 
+                currency: 'COP', 
+                minimumFractionDigits: 0 
+            });
+
+            totalCostElement.textContent = formattedTotal;
+            return total; // Retorna el valor numérico total
+        }
+
+        // =======================================================
+        // == 3. LÓGICA DE INTERACCIÓN Y ENVÍO A PHP (AJAX) ==
+        // =======================================================
+
+        // Generar asientos
         for (let i = 0; i < totalSeats; i++) {
             const seat = document.createElement('div');
             seat.classList.add('seat');
-           
-            // Asignar un índice para calcular la Fila y Asiento
             seat.dataset.seatIndex = i;
 
-
-
-
-            // Simular algunos asientos reservados
+            // Simular asientos reservados
             if (i >= 20 && i < 25 || i === 50) {
                 seat.classList.add('reserved');
             }
-
-
-
 
             seat.addEventListener('click', () => {
                 if (!seat.classList.contains('reserved')) {
                     const isSelecting = !seat.classList.contains('selected');
                     seat.classList.toggle('selected');
-                    updateSelectedCount();
-                   
-                    // Actualizar descripción única
+                    updateSelectedCount(); 
                     updateSeatDescription(seat.dataset.seatIndex, isSelecting);
                 }
             });
             grid.appendChild(seat);
         }
 
-
-
-
         function updateSelectedCount() {
             const selectedSeats = document.querySelectorAll('.seat.selected');
             selectedCount = selectedSeats.length;
             countElement.textContent = selectedCount;
 
-
-
-
-            // Lógica para habilitar/deshabilitar el botón de avance
             if (selectedCount > 0) {
                 checkoutBtn.disabled = false;
                 advanceWarning.style.display = 'none';
@@ -480,16 +492,18 @@
                 checkoutBtn.disabled = true;
                 advanceWarning.style.display = 'block';
             }
+            
+            calculateTotalCost(); 
         }
-       
-        // Función para generar una descripción única para el asiento
+        
         function updateSeatDescription(index, isSelecting) {
             const row = Math.floor(index / 10) + 1;
             const position = (index % 10) + 1;
-            const zone = row <= 3 ? "VIP Delantera" : row <= 7 ? "General Central" : "General Trasera";
-           
+            const zone = getSeatZone(index);
+            const price = getSeatPrice(index).toLocaleString('es-CO', { style: 'currency', currency: 'COP', minimumFractionDigits: 0 });
+
             if (isSelecting) {
-                seatDescription.textContent = `Fila ${row}, Asiento ${position} | Zona: ${zone} | Vista: ${zone === 'VIP Delantera' ? 'Excelente' : 'Buena'}.`;
+                seatDescription.textContent = `Fila ${row}, Asiento ${position} | Zona: ${zone} | Precio: ${price}.`;
             } else {
                 if (document.querySelectorAll('.seat.selected').length === 0) {
                      seatDescription.textContent = `Ninguno.`;
@@ -499,24 +513,85 @@
             }
         }
 
+        // ⭐ Lógica de avance y "migración" de datos a PHP (AJAX) ⭐
+        checkoutBtn.addEventListener('click', async (e) => {
+            e.preventDefault(); // Detenemos la redirección
 
-
-
-        // Lógica de avance condicional
-        checkoutBtn.addEventListener('click', (e) => {
             if (selectedCount > 0) {
-                window.location.href = 'fila_virtual.html';
+                checkoutBtn.disabled = true;
+                checkoutBtn.textContent = 'PROCESANDO ORDEN...';
+                
+                const selectedSeatsNodes = document.querySelectorAll('.seat.selected');
+                const seatsList = [];
+
+                // 1. Recolectar detalles de cada asiento
+                selectedSeatsNodes.forEach(seat => {
+                    const index = parseInt(seat.dataset.seatIndex);
+                    const row = Math.floor(index / 10) + 1;
+                    const position = (index % 10) + 1;
+                    const zone = getSeatZone(index);
+                    const price = getSeatPrice(index);
+                    
+                    seatsList.push({
+                        index: index,
+                        row: row,
+                        position: position,
+                        zone: zone,
+                        price: price 
+                    });
+                });
+
+                // 2. Crear el objeto de la Orden a enviar al servidor
+                const pendingOrder = {
+                    event: currentEventDetails,
+                    seats: seatsList,
+                    totalCost: calculateTotalCost() // Obtiene el valor numérico
+                };
+
+                try {
+                    // ⭐ RUTA CORREGIDA: '../' sube al directorio padre liveonix_tickets/ ⭐
+                    const response = await fetch('../process_order.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(pendingOrder)
+                    });
+
+                    // 4. Procesar la respuesta del servidor
+                    const result = await response.json();
+
+                    if (response.ok && result.success) {
+                        // Éxito: Guardar datos de la orden en localStorage para usarlos en fila_virtual.html
+                        localStorage.setItem('liveonix_order_id', result.order_id);
+                        localStorage.setItem('liveonix_order_details', JSON.stringify(pendingOrder));
+
+                        // 5. Redirigir a la fila virtual (ruta relativa al mismo directorio)
+                        window.location.href = 'fila_virtual.html';
+
+                    } else if (response.status === 503 || response.status === 500) {
+                         // Simulación de SOBRECARGA (redirige a la página de error que ya tienes)
+                        window.location.href = 'sobrecarga_server.html';
+                    } 
+                    else {
+                        // Error reportado por el script PHP 
+                        alert(`Error al guardar la orden: ${result.message || 'Error desconocido del servidor.'}`);
+                    }
+
+                } catch (error) {
+                    // Error de conexión de red (WAMP no activo)
+                    alert('Error de conexión. Asegúrate de que el servidor WAMP esté corriendo.');
+                    console.error('Error de Fetch:', error);
+                } finally {
+                    // Restaurar el botón en caso de fallo
+                    checkoutBtn.disabled = false;
+                    checkoutBtn.textContent = 'CONTINUAR A LA FILA DE COMPRA';
+                }
+
             } else {
-                e.preventDefault();
                 advanceWarning.style.display = 'block';
             }
         });
-
-
-
-
-
-
 
 
         // Inicializar funciones al cargar la página
@@ -525,10 +600,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
